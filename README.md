@@ -183,7 +183,6 @@ export const generateExample: ProblemGenerator = ({ count }) => {
 
 跨年級或跨題型重複使用的數學工具放在 `src/lib/math-engine/utils.ts`。目前包含隨機整數、ID、最大公因數、最小公倍數與分數約分。
 
-新增共用能力前，先檢查這裡是否已有相同用途的 helper。新出題器應優先使用共用工具；部分舊的一年級模組仍自行實作隨機整數及 ID，後續可在整理該模組時逐步遷移，不需為此做無關的大型改寫。
 
 ## 九、樣式與列印
 
@@ -220,13 +219,13 @@ export const generateExample: ProblemGenerator = ({ count }) => {
 
 目前呈現層對資料格式有下列實際依賴，新增題型時需一併檢查：
 
-- **一般直式算式：**`MathProblemRenderer` 使用正規表示式解析「數字、運算符號、數字、等號」格式；除法另有 pattern。expression 不符合格式時，可能退回一般文字加答題線，不會自動推導運算欄位。
-- **分數：**透過 `meta.type === 'fraction'` 識別；expression 以空白分割，含 `/` 的片段會被呈現為上下分數。
-- **應用題：**目前依單元 ID 是否含 `WORD`／`NUM`、`operator` 是否為 `word`／`word-problem`，或 `meta.isWordProblem`／`meta.layout` 判定。新增題型須同步檢查 `checkIsWordProblem()` 及 renderer 的分類方式。
-- **每頁題數：**`layoutCalculator.ts` 會依 `FRAC`、`MUL`／`MULT`、`DIV` 等 ID 子字串及應用題狀態選擇規則。更改 ID 類別縮寫時要確認頁面容量仍符合新題型。
-- **直式支援：**表單頁面會依題型限制直式選項，並在不支援時切回橫式；新題型需讓表單限制與 renderer 能力一致。
-- **答案：**答案頁不重算算式，直接輸出 `problem.answer`；單位、餘數及分數格式都由 generator 負責。
-- **題目 ID：**供 React key、排序、修改、重抽及答案題號回查使用；同一份學習單內必須唯一。單題重抽會沿用原 ID。
-- **注音：**低年級應用題可使用注音字型及字元讀音切換；新增文字題後應確認畫面行高及列印字型。
+- 一般直式算式：`MathProblemRenderer` 使用正規表示式解析「數字、運算符號、數字、等號」格式；除法另有 pattern。expression 不符合格式時，可能退回一般文字加答題線，不會自動推導運算欄位。
+- 分數：透過 `meta.type === 'fraction'` 識別；expression 以空白分割，含 `/` 的片段會被呈現為上下分數。
+- 應用題：目前依單元 ID 是否含 `WORD`／`NUM`、`operator` 是否為 `word`／`word-problem`，或 `meta.isWordProblem`／`meta.layout` 判定。新增題型須同步檢查 `checkIsWordProblem()` 及 renderer 的分類方式。
+- 每頁題數：`layoutCalculator.ts` 會依 `FRAC`、`MUL`／`MULT`、`DIV` 等 ID 子字串及應用題狀態選擇規則。更改 ID 類別縮寫時要確認頁面容量仍符合新題型。
+- 直式支援：表單頁面會依題型限制直式選項，並在不支援時切回橫式；新題型需讓表單限制與 renderer 能力一致。
+- 答案：答案頁不重算算式，直接輸出 `problem.answer`；單位、餘數及分數格式都由 generator 負責。
+- 題目 ID：供 React key、排序、修改、重抽及答案題號回查使用；同一份學習單內必須唯一。單題重抽會沿用原 ID。
+- 注音：低年級應用題可使用注音字型及字元讀音切換；新增文字題後應確認畫面行高及列印字型。
 
-新增單元 ID 需沿用 `G{年級}-{類別}-{流水號}`，例如 `G3-DIV-01`。目前部分 UI helper 直接依 ID 子字串判斷類型，因此 ID 不只是顯示用識別碼；長期擴充應優先考慮明確、有型別的題型欄位，避免持續增加對 ID 命名細節的依賴。
+注意:新增單元 ID 需沿用 `G{年級}-{類別}-{流水號}`，例如 `G3-DIV-01`。目前部分 UI helper 直接依 ID 子字串判斷類型，因此 ID 不只是顯示用識別碼。
