@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #E0E5EC;
+  color: #3D4852;
+}
+
+/* ── 低年級注音字體設定 (字嗨注音標楷體) ────────────────────────── */
+@font-face {
+  font-family: 'BpmfZihiKaiStd';
+  src: url('/fonts/BpmfZihiKaiStd-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 🎯 低年級注音通用樣式：讓包含 alt 的 Class 也統一吃字嗨注音字型與行高 */
+.font-bopomofo,
+.font-bopomofo-alt1,
+.font-bopomofo-alt2 {
+  font-family: 'BpmfZihiKaiStd', '標楷體', KaiTi, sans-serif !important;
+  line-height: 2.2 !important; /* 補足注音標籤所需的上方高度，防止重疊 */
+  font-variant-east-asian: ruby !important;
+}
+
+/* 🎯 預設基礎特性 */
+.font-bopomofo {
+  font-feature-settings: "ruby" 1, "vtmk" 1 !important;
+}
+
+/* 🎯 字嗨注音字型專用的破音字/變調切換 Class (必須在 @media print 外面，螢幕顯示才有效) */
+.font-bopomofo-alt1 {
+  font-feature-settings: "ruby" 1, "salt" 1, "ss01" 1, "cv01" 1, "vtmk" 1 !important;
+}
+
+.font-bopomofo-alt2 {
+  font-feature-settings: "ruby" 1, "salt" 2, "ss02" 1, "cv02" 1, "vtmk" 1 !important;
+}
+
+/* 擴充原本的 @media print 區塊，全面支援 A4 列印與 PDF 下載 */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 12mm 10mm;
+  }
+
+  html, body {
+    width: 100% !important;
+    height: auto !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .break-inside-avoid,
+  .page-break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .grid {
+    display: grid !important;
+  }
+
+  /* 🎯 確保列印與 PDF 輸出時注音字型與 OpenType 特性正確渲染 */
+  .font-bopomofo,
+  .font-bopomofo-alt1,
+  .font-bopomofo-alt2 {
+    font-family: 'BpmfZihiKaiStd', '標楷體', KaiTi, sans-serif !important;
+    line-height: 2.2 !important;
+    font-variant-east-asian: ruby !important;
+  }
+
+  .font-bopomofo {
+    font-feature-settings: "ruby" 1, "vtmk" 1 !important;
+  }
+
+  .font-bopomofo-alt1 {
+    font-feature-settings: "ruby" 1, "salt" 1, "ss01" 1, "cv01" 1, "vtmk" 1 !important;
+  }
+
+  .font-bopomofo-alt2 {
+    font-feature-settings: "ruby" 1, "salt" 2, "ss02" 1, "cv02" 1, "vtmk" 1 !important;
+  }
+}
